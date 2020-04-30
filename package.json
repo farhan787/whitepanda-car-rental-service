@@ -1,0 +1,23 @@
+{
+  "name": "whitepanda-car-rental-service",
+  "version": "1.0.0",
+  "description": "Whitepanda backend car rental service REST APIs task",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-dev-server": "./node_modules/nodemon/bin/nodemon.js"
+  },
+  "keywords": [],
+  "author": "Muhammad Farhan",
+  "license": "ISC",
+  "dependencies": {
+    "config": "^3.3.1",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.11",
+    "winston": "^3.2.1",
+    "winston-mongodb": "^5.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3"
+  }
+}
