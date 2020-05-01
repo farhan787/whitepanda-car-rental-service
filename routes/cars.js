@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
+const auth = require('../middleware/auth');
 const validate = require('../middleware/validator');
 const validateObjectId = require('../middleware/validateObjectId');
 
@@ -9,16 +10,32 @@ const { validateCarSchema } = require('../models/car.model');
 
 const CarController = require('../controllers/car.controller');
 
-router.post('/addCar', validate(validateCarSchema), CarController.addCar);
+router.post(
+  '/addCar',
+  [auth, validate(validateCarSchema)],
+  CarController.addCar
+);
 
-router.post('/bookCar', validate(validateBookingSchema), CarController.bookCar);
+router.post(
+  '/bookCar',
+  [auth, validate(validateBookingSchema)],
+  CarController.bookCar
+);
 
-router.post('/availableCars', CarController.findAvailableCars);
+router.post('/availableCars', auth, CarController.findAvailableCars);
 
-router.get('/carDetails/:id', validateObjectId, CarController.getCarDetails);
+router.get(
+  '/carDetails/:id',
+  [auth, validateObjectId],
+  CarController.getCarDetails
+);
 
-router.put('/updateCar/:id', validateObjectId, CarController.updateCar);
+router.put('/updateCar/:id', [auth, validateObjectId], CarController.updateCar);
 
-router.delete('/deleteCar/:id', validateObjectId, CarController.deleteCar);
+router.delete(
+  '/deleteCar/:id',
+  [auth, validateObjectId],
+  CarController.deleteCar
+);
 
 module.exports = router;

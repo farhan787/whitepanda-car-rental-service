@@ -8,11 +8,9 @@ exports.addCar = async (req, res) => {
   });
 
   if (isDuplicateCarNumber) {
-    return res
-      .status(400)
-      .send({
-        'Duplicate Error': `Car with number ${req.body.carNumber} already exist`,
-      });
+    return res.status(400).send({
+      'Duplicate Error': `Car with number ${req.body.carNumber} already exist`,
+    });
   }
 
   const car = new Car({
