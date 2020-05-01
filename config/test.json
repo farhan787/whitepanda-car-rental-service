@@ -1,0 +1,4 @@
+{
+    "jwtPrivateKey": "1234",
+    "db": "mongodb://localhost/car_rental_test_db"
+}
