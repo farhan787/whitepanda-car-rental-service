@@ -9,6 +9,7 @@
   },
   "scripts": {
     "test": "jest --watchAll --verbose",
+    "start-server": "node index.js",
     "start-dev-server": "./node_modules/nodemon/bin/nodemon.js"
   },
   "keywords": [],
