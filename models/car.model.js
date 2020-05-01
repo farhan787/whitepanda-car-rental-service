@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const moment = require('moment');
 const Joi = require('joi');
 
+const { Bookings } = require('./bookings.model');
+
 const carSchema = new mongoose.Schema({
   companyName: {
     type: String,
@@ -29,8 +31,6 @@ const carSchema = new mongoose.Schema({
   },
 });
 
-carSchema.static.lastBookingEndDate = undefined;
-
 carSchema.methods.getNextBookingSlot = function (rentalDays, booking) {
   if (booking) {
     const lastBooking = booking.bookingSlots[booking.bookingSlots.length - 1];
@@ -45,12 +45,20 @@ carSchema.methods.getNextBookingSlot = function (rentalDays, booking) {
   return { bookingStartTime: startTime, bookingEndTime: endTime };
 };
 
-carSchema.methods.getCarDetails = function (carNumber) {
-  // return car details
+carSchema.statics.carDetails = async function (carId) {
+  const car = await this.findById(carId);
+  const bookings = await Bookings.find({ carId: carId }).select('-carId');
+
+  const details = { car, bookings };
+  return details;
 };
 
-carSchema.methods.deleteCar = function (carNumber) {
-  // delete car if it's not booked
+carSchema.statics.isBooked = async function (carId) {
+  const bookings = await Bookings.find({ carId: carId }).select('-carId');
+  if (bookings.length > 0) {
+    return true;
+  }
+  return false;
 };
 
 const Car = mongoose.model('Car', carSchema);

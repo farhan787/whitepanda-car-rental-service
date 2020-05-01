@@ -1,8 +1,10 @@
 const moment = require('moment');
 const { Bookings } = require('../models/bookings.model');
-const { Car } = require('../models/car.model');
+const { Car, validateCarSchema } = require('../models/car.model');
 
 exports.addCar = async (req, res) => {
+  // handle same carNumber cars
+
   const car = new Car({
     carNumber: req.body.carNumber,
     companyName: req.body.companyName,
@@ -17,7 +19,7 @@ exports.addCar = async (req, res) => {
     carInfo: car,
     message: 'Car added successfully',
   };
-  res.send(responseData);
+  return res.send(responseData);
 };
 
 exports.bookCar = async (req, res) => {
@@ -69,13 +71,101 @@ exports.bookCar = async (req, res) => {
   res.send(resData);
 };
 
-// // show availabe cars, based on date, time, seating capacity or other filters
-// router.post('/availableCars', CarController.findAvailableCars);
+exports.findAvailableCars = async (req, res) => {
+  const validFilters = ['date', 'companyName', 'year', 'seatingCapacity'];
 
-// // Using only car model
-// // show the details of a particular car and its currently active booking
-// router.post('/carDetails/:carNumber', CarController.getCarDetails);
+  const filter = req.body.filter;
+  const filterValue = req.body.filterValue;
+  if (!validFilters.includes(filter)) {
+    return res
+      .status(400)
+      .send({ Error: 'Invalid filter', validFilters: validFilters });
+  }
 
-// // update/delete a car only if it's not booked
-// router.update('/updateCar', CarController.updateCar);
-// router.delete('/deleteCar', CarController.deleteCar);
+  if (!filterValue) {
+    return res
+      .status(400)
+      .send({ Error: 'filterValue is missing from request body' });
+  }
+
+  const query = {};
+  query[filter] = filterValue;
+
+  const cars = await Car.find(query).select('-_id -__v');
+  return res.send(cars);
+};
+
+exports.getCarDetails = async (req, res) => {
+  const carId = req.params.id;
+  if (!carId) {
+    return res
+      .status(400)
+      .send({ Error: 'carId is missing from request param' });
+  }
+
+  const carDetails = await Car.carDetails(carId);
+  return res.send(carDetails);
+};
+
+exports.updateCar = async (req, res) => {
+  const carId = req.params.id;
+  if (!carId) {
+    return res
+      .status(400)
+      .send({ Error: 'carId is missing from request param' });
+  }
+
+  const { error } = validateCarSchema(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+
+  const carIsBooked = await Car.isBooked(carId);
+  if (carIsBooked) {
+    return res
+      .status(400)
+      .send({ 'Response status': 'Can not update a booked car ' });
+  }
+
+  const updatedCar = await Car.findByIdAndUpdate(
+    carId,
+    {
+      $set: {
+        companyName: req.body.companyName,
+        carNumber: req.body.carNumber,
+        dailyRentalRate: req.body.dailyRentalRate,
+        model: req.body.model,
+        year: req.body.year,
+        seatingCapacity: req.body.seatingCapacity,
+      },
+    },
+    { new: true }
+  );
+
+  const resData = {
+    updatedCar: updatedCar,
+    message: 'Car updated successfully!',
+  };
+  return res.send(resData);
+};
+
+exports.deleteCar = async (req, res) => {
+  const carId = req.params.id;
+  if (!carId) {
+    return res
+      .status(400)
+      .send({ Error: 'carId is missing from request param' });
+  }
+
+  const carIsBooked = await Car.isBooked(carId);
+  if (carIsBooked) {
+    return res
+      .status(400)
+      .send({ 'Response status': 'Can not delete a booked car ' });
+  }
+
+  await Car.findByIdAndRemove(carId);
+
+  const resData = {
+    message: 'Car deleted successfully!',
+  };
+  return res.send(resData);
+};
