@@ -59,6 +59,7 @@ function validateCarSchema(reqCar) {
   const schema = {
     companyName: Joi.string().max(50),
     carNumber: Joi.string().max(20).required(),
+    dailyRentalRate: Joi.number().required(),
     model: Joi.string().max(30).required(),
     year: Joi.number().required(),
     seatingCapacity: Joi.number().max(20).required(),

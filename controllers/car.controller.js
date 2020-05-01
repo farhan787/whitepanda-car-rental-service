@@ -1,13 +1,8 @@
 const moment = require('moment');
-const { Bookings, validateBookingSchema } = require('../models/bookings.model');
-const { Car, validateCarSchema } = require('../models/car.model');
+const { Bookings } = require('../models/bookings.model');
+const { Car } = require('../models/car.model');
 
 exports.addCar = async (req, res) => {
-  const { err } = validateCarSchema(req.body);
-  if (err) {
-    return res.status(400).send(err);
-  }
-
   const car = new Car({
     carNumber: req.body.carNumber,
     companyName: req.body.companyName,
@@ -20,22 +15,20 @@ exports.addCar = async (req, res) => {
   await car.save();
   const responseData = {
     carInfo: car,
-    message: 'Car saved successfully',
+    message: 'Car added successfully',
   };
   res.send(responseData);
 };
 
 exports.bookCar = async (req, res) => {
-  const { err } = validateBookingSchema(req.body);
-  if (err) {
-    return res.status(400).send(err);
-  }
-
   const carId = req.body.carId;
   const rentalDays = req.body.rentalDays;
+  if (!rentalDays) {
+    res.status(400).send({ error: 'rentalDays missing in request body' });
+  }
 
   const car = await Car.findById(carId);
-  if (!car) res.status(404).send('Car not found');
+  if (!car) res.status(404).send({ error: 'Car not found' });
 
   const existingBooking = await Bookings.findOne({
     carId: carId,
@@ -53,6 +46,7 @@ exports.bookCar = async (req, res) => {
 
   const newBooking = new Bookings({
     carId: carId,
+    rentalDays: rentalDays,
     bookingSlots: bookingSlots,
   });
 

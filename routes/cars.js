@@ -1,13 +1,17 @@
 const express = require('express');
 const router = express.Router();
 
+const validate = require('../middleware/validator');
+const { validateBookingSchema } = require('../models/bookings.model');
+const { validateCarSchema } = require('../models/car.model');
+
 const CarController = require('../controllers/car.controller');
 
 // add a new car
-router.post('/addCar', CarController.addCar);
+router.post('/addCar', validate(validateCarSchema), CarController.addCar);
 
 // book a specified car on its availability. A car can have multiple bookings
-router.post('/bookCar', CarController.bookCar);
+router.post('/bookCar', validate(validateBookingSchema), CarController.bookCar);
 
 // show availabe cars, based on date, time, seating capacity or other filters
 // router.post('/availableCars', CarController.findAvailableCars);
