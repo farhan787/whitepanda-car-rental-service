@@ -91,7 +91,7 @@ $   npm run start-server
     http method: GET
 ```
 
-5. `/api/cars/updateCar`
+5. `/api/cars/updateCar/:id`
 
 ```js
     //  can't update a car's details when it is booked by someone
