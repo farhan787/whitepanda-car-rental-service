@@ -1,0 +1,304 @@
+{
+	"info": {
+		"_postman_id": "5cf8b962-4453-492c-8900-b4a0100e59cd",
+		"name": "WhitePanda Car Rental Service",
+		"description": "APIs Collection to test the web application hosted at https://whitepanda-car-rental-service.herokuapp.com",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Signup",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"farhan\",\n\t\"email\": \"farhan1@gmail.com\",\n\t\"password\": \"password1\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://whitepanda-car-rental-service.herokuapp.com/api/users/addUser",
+					"protocol": "https",
+					"host": [
+						"whitepanda-car-rental-service",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"users",
+						"addUser"
+					]
+				},
+				"description": "Adding a user for signup so that we can authenticate him/her wherever needed."
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"farhan1@gmail.com\",\n\t\"password\": \"password1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://whitepanda-car-rental-service.herokuapp.com/api/auth",
+					"protocol": "https",
+					"host": [
+						"whitepanda-car-rental-service",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"auth"
+					]
+				},
+				"description": "Login to get \"auth-token\" for authentication."
+			},
+			"response": []
+		},
+		{
+			"name": "/api/addCar",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "name",
+						"value": "farhan",
+						"type": "text"
+					},
+					{
+						"key": "auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWFjZTdhNGU3N2NjMjAwMTc0M2RhNDciLCJpYXQiOjE1ODgzODk4ODF9.wsnhrqfE_WCp35vCuWeM8yR-l9swX20tdlTN56GNxkI",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"companyName\": \"Maruti Suzuki\",\n\t\"carNumber\": \"UP FAZ 2425\",\n\t\"dailyRentalRate\": \"1200\",\n\t\"model\": \"Esteem\",\n\t\"year\": \"2012\",\n\t\"seatingCapacity\": \"5\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://whitepanda-car-rental-service.herokuapp.com/api/cars/addCar",
+					"protocol": "https",
+					"host": [
+						"whitepanda-car-rental-service",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"cars",
+						"addCar"
+					]
+				},
+				"description": "Adding a car to the database."
+			},
+			"response": []
+		},
+		{
+			"name": "/api/cars/bookCar",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWFjZTdhNGU3N2NjMjAwMTc0M2RhNDciLCJpYXQiOjE1ODgzODk4ODF9.wsnhrqfE_WCp35vCuWeM8yR-l9swX20tdlTN56GNxkI",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"carId\": \"5eacece933b7eb0017dcfcf0\",\n\t\"rentalDays\": 3\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://whitepanda-car-rental-service.herokuapp.com/api/cars/bookCar",
+					"protocol": "https",
+					"host": [
+						"whitepanda-car-rental-service",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"cars",
+						"bookCar"
+					]
+				},
+				"description": "Booking a car for rental, the request car with carId will be automatically booked whenever it has the next free slot, for as many days as you want."
+			},
+			"response": []
+		},
+		{
+			"name": "/api/cars/availableCars",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWFjZTdhNGU3N2NjMjAwMTc0M2RhNDciLCJpYXQiOjE1ODgzODk4ODF9.wsnhrqfE_WCp35vCuWeM8yR-l9swX20tdlTN56GNxkI",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"filter\": \"date\",\n\t\"filterValue\": \"2020-06-11T08:05:56.948Z\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://whitepanda-car-rental-service.herokuapp.com/api/cars/availableCars",
+					"protocol": "https",
+					"host": [
+						"whitepanda-car-rental-service",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"cars",
+						"availableCars"
+					]
+				},
+				"description": "\"filter\" can be any of these `[\"seatingCapacity\", \"companyName\", \"year\", \"date\"]` and the \"filterValue\" would be according to the filter. For date and time it should be created using `new Date()` constructor in JavaScript, frontend application will handle this thing."
+			},
+			"response": []
+		},
+		{
+			"name": "/api/cars/carDetails/:id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWFiZDllNDRhMjY4YjY2NjgzNTRhNDQiLCJpYXQiOjE1ODgzMjA3NDB9.dp0PkHYOpET9Oj0GH4xiercWOj1tEFgOUrBx6XOYyug",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://whitepanda-car-rental-service.herokuapp.com/api/cars/carDetails/5eacea6633b7eb0017dcfceb",
+					"protocol": "https",
+					"host": [
+						"whitepanda-car-rental-service",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"cars",
+						"carDetails",
+						"5eacea6633b7eb0017dcfceb"
+					]
+				},
+				"description": "Get the details of a car along with its booked booking slots."
+			},
+			"response": []
+		},
+		{
+			"name": "/api/cars/updateCar/:id",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWFiZDllNDRhMjY4YjY2NjgzNTRhNDQiLCJpYXQiOjE1ODgzMjA3NDB9.dp0PkHYOpET9Oj0GH4xiercWOj1tEFgOUrBx6XOYyug",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"companyName\": \"Maruti Suzuki\",\n\t\"carNumber\": \"DL UOE 3024\",\n\t\"dailyRentalRate\": \"1000\",\n\t\"model\": \"WagonR\",\n\t\"year\": \"2016\",\n\t\"seatingCapacity\": \"5\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://whitepanda-car-rental-service.herokuapp.com/api/cars/updateCar/5eacecae33b7eb0017dcfcef",
+					"protocol": "https",
+					"host": [
+						"whitepanda-car-rental-service",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"cars",
+						"updateCar",
+						"5eacecae33b7eb0017dcfcef"
+					]
+				},
+				"description": "Update the details of car. If a car is booked then it can not be updated."
+			},
+			"response": []
+		},
+		{
+			"name": "/api/cars/deleteCar/:id",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWFiZDllNDRhMjY4YjY2NjgzNTRhNDQiLCJpYXQiOjE1ODgzMjA3NDB9.dp0PkHYOpET9Oj0GH4xiercWOj1tEFgOUrBx6XOYyug",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://whitepanda-car-rental-service.herokuapp.com/api/cars/deleteCar/5eacece933b7eb0017dcfcf0",
+					"protocol": "https",
+					"host": [
+						"whitepanda-car-rental-service",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"cars",
+						"deleteCar",
+						"5eacece933b7eb0017dcfcf0"
+					]
+				},
+				"description": "Deleting a car. If a car is booked then it can not be deleted."
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -100,7 +100,7 @@ exports.findAvailableCars = async (req, res) => {
       .send({ Error: 'filterValue is missing from request body' });
   }
 
-  if (filter === 'date' || filter == -'time') {
+  if (filter === 'date' || filter === 'time') {
     const availableCars = await Car.getAvailableCars(filterValue);
     return res.send(availableCars);
   }

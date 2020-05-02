@@ -13,18 +13,6 @@ const bookingsSchema = new mongoose.Schema({
   },
 });
 
-// const bookingsSchema = new mongoose.Schema({
-//   car: {
-//     type: mongoose.Schema.Types.ObjectId,
-//     ref: 'Car',
-//   },
-//   bookingSlots: {
-//     type: ['Mixed'],
-//     required: true,
-//   },
-// });
-
-
 const Bookings = mongoose.model('Bookings', bookingsSchema);
 
 function validateBookingSchema(reqBooking) {

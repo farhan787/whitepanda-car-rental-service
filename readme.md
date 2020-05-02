@@ -1,5 +1,10 @@
 # Car Rental Service Web App
 
+## Application hosted [here](https://whitepanda-car-rental-service.herokuapp.com)
+
+## Postman [API Collection](https://documenter.getpostman.com/view/4199768/SzmZcfrD?version=latest)
+
+
 ## Run it on your machine
 
 **First of all clone this repo** then follow these below steps,
@@ -9,7 +14,7 @@ $   npm install
 $   npm run start-server
 ```
 
-## API endpoints
+## API endpoints (in case postman collection link breaks in future)
 
 
 ### Users
