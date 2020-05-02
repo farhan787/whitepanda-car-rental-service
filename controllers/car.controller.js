@@ -163,6 +163,13 @@ exports.deleteCar = async (req, res) => {
       .send({ Error: 'carId is missing from request param' });
   }
 
+  const car = await Car.findById(carId);
+  if (!car) {
+    return res.status(404).send({
+      'Not Found Error': `Car with carId ${carId} does not exist`,
+    });
+  }
+
   const carIsBooked = await Car.isBooked(carId);
   if (carIsBooked) {
     return res
@@ -173,6 +180,7 @@ exports.deleteCar = async (req, res) => {
   await Car.findByIdAndRemove(carId);
 
   const resData = {
+    carInfo: car,
     message: 'Car deleted successfully!',
   };
   return res.send(resData);
