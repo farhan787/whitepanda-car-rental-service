@@ -61,6 +61,32 @@ carSchema.statics.isBooked = async function (carId) {
   return false;
 };
 
+carSchema.statics.getAvailableCars = async function (filterValue) {
+  const availableCars = [];
+  const unAvailableCars = [];
+
+  const cars = await Car.find();
+  const bookings = await Bookings.find();
+
+  bookings.map((booking) => {
+    const totalBookingSlots = booking.bookingSlots.length;
+    const lastBooking = booking.bookingSlots[totalBookingSlots - 1];
+    const carId = booking.carId;
+
+    if (lastBooking.bookingEndTime > filterValue) {
+      unAvailableCars[carId] = 'booked';
+    }
+  });
+
+  cars.map((car) => {
+    const carId = car._id;
+    if (unAvailableCars[carId] !== 'booked') {
+      availableCars.push(car);
+    }
+  });
+  return availableCars;
+};
+
 const Car = mongoose.model('Car', carSchema);
 
 function validateCarSchema(reqCar) {

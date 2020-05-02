@@ -34,11 +34,15 @@ exports.bookCar = async (req, res) => {
   const carId = req.body.carId;
   const rentalDays = req.body.rentalDays;
   if (!rentalDays) {
-    res.status(400).send({ error: 'rentalDays missing in request body' });
+    return res
+      .status(400)
+      .send({ error: 'rentalDays missing in request body' });
   }
 
   const car = await Car.findById(carId);
-  if (!car) res.status(404).send({ error: 'Car not found' });
+  if (!car) {
+    return res.status(404).send({ error: 'Car not found' });
+  }
 
   const existingBooking = await Bookings.findOne({
     carId: carId,
@@ -96,6 +100,11 @@ exports.findAvailableCars = async (req, res) => {
       .send({ Error: 'filterValue is missing from request body' });
   }
 
+  if (filter === 'date' || filter == -'time') {
+    const availableCars = await Car.getAvailableCars(filterValue);
+    return res.send(availableCars);
+  }
+
   const query = {};
   query[filter] = filterValue;
 
@@ -124,7 +133,9 @@ exports.updateCar = async (req, res) => {
   }
 
   const { error } = validateCarSchema(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  if (error) {
+    return res.status(400).send(error.details[0].message);
+  }
 
   const carIsBooked = await Car.isBooked(carId);
   if (carIsBooked) {
