@@ -3,11 +3,11 @@ const { Bookings } = require('../models/bookings.model');
 const { Car, validateCarSchema } = require('../models/car.model');
 
 exports.addCar = async (req, res) => {
-  const isDuplicateCarNumber = await Car.find({
+  const duplicateCarNumber = await Car.find({
     carNumber: req.body.carNumber,
   });
 
-  if (isDuplicateCarNumber) {
+  if (duplicateCarNumber.length > 0) {
     return res.status(400).send({
       'Duplicate Error': `Car with number ${req.body.carNumber} already exist`,
     });
