@@ -2,6 +2,11 @@ const moment = require('moment');
 const { Bookings } = require('../models/bookings.model');
 const { Car, validateCarSchema } = require('../models/car.model');
 
+exports.getCars = async(req, res) => {
+  const cars = await Car.find();
+  res.send(cars);
+}
+
 exports.addCar = async (req, res) => {
   const duplicateCarNumber = await Car.find({
     carNumber: req.body.carNumber,

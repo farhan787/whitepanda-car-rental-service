@@ -16,19 +16,11 @@ router.post(
   CarController.addCar
 );
 
-router.post(
-  '/bookCar',
-  [auth, validate(validateBookingSchema)],
-  CarController.bookCar
-);
+router.post('/bookCar', validate(validateBookingSchema), CarController.bookCar);
 
 router.post('/availableCars', auth, CarController.findAvailableCars);
 
-router.get(
-  '/carDetails/:id',
-  [auth, validateObjectId],
-  CarController.getCarDetails
-);
+router.get('/carDetails/:id', validateObjectId, CarController.getCarDetails);
 
 router.put('/updateCar/:id', [auth, validateObjectId], CarController.updateCar);
 
@@ -37,5 +29,7 @@ router.delete(
   [auth, validateObjectId],
   CarController.deleteCar
 );
+
+router.get('/getCars', CarController.getCars);
 
 module.exports = router;

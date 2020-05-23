@@ -17,6 +17,14 @@ const carSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  color: {
+    type: String,
+    required: true,
+  },
+  engineType: {
+    type: String,
+    required: true,
+  },
   year: {
     type: Number,
     required: true,
@@ -95,6 +103,8 @@ function validateCarSchema(reqCar) {
     carNumber: Joi.string().max(20).required(),
     dailyRentalRate: Joi.number().required(),
     model: Joi.string().max(30).required(),
+    color: Joi.string().max(15).required(),
+    engineType: Joi.string().max(10).required(),
     year: Joi.number().required(),
     seatingCapacity: Joi.number().max(20).required(),
   };
